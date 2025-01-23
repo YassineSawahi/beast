@@ -124,4 +124,4 @@ Setup.CONNECTION_STATUS = {
     DISCONNECTED: 'DISCONNECTED'
 };
 
-module.exports = Setup;
+export default Setup;

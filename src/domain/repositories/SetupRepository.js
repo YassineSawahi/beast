@@ -1,4 +1,4 @@
-const Setup = require('../models/Setup');
+import Setup from '../models/Setup';
 
 class SetupRepository {
     /**
@@ -19,4 +19,4 @@ class SetupRepository {
     }
 }
 
-module.exports = SetupRepository; 
+export default SetupRepository; 

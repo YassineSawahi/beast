@@ -1,17 +1,29 @@
-const Setup = require("../../domain/models/Setup");
-const axiosInstance = require("./axiosInstance");
-const SetupRepository = require("../../domain/repositories/SetupRepository");
+import Setup from "../../domain/models/Setup";
+import axiosInstance from "./axiosInstance";
+import SetupRepository from "../../domain/repositories/SetupRepository";
 
 class SetupRepositoryImpl extends SetupRepository {
     async fetchSetups() {
         const response = await axiosInstance.get("/setups");
-        return response.data.map(data => Setup.fromDB(data));
+
+        if (!response.data || !Array.isArray(response.data.data)) {
+            console.error('Unexpected API response format:', response);
+            return [];
+        }
+
+        return response.data.data.map(data => Setup.fromDB(data));
     }
 
     async fetchBySerialNumber(serialNumber) {
         const response = await axiosInstance.get(`/setups/${serialNumber}`);
-        return Setup.fromDB(response.data);
+
+        if (!response.data.data) {
+            console.error('No data received for serial number:', serialNumber);
+            return null;
+        }
+
+        return Setup.fromDB(response.data.data);
     }
 }
 
-module.exports = SetupRepositoryImpl; 
+export default SetupRepositoryImpl; 

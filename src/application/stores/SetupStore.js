@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { SetupRepositoryImpl } from "../../infrastructure/api/SetupRepositoryImpl";
+import SetupRepositoryImpl from "../../infrastructure/api/SetupRepositoryImpl";
 
 const repository = new SetupRepositoryImpl();
 
