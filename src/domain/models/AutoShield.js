@@ -1,4 +1,4 @@
-const AutoShieldService = require('./services/AutoShieldService');
+import AutoShieldService from './services/AutoShieldService';
 
 class AutoShield {
     constructor({
@@ -85,4 +85,4 @@ AutoShield.CONNECTION_STATUS = {
     DISCONNECTED: 'DISCONNECTED'
 };
 
-module.exports = AutoShield;
+export default AutoShield;

@@ -19,4 +19,4 @@ class AutoShieldRepository {
     }
 }
 
-module.exports = AutoShieldRepository; 
+export default AutoShieldRepository; 

@@ -1,5 +1,4 @@
-const axios = require("axios");
-const { environment } = require("../../config/environment");
+import axios from 'axios';
 
 const axiosInstance = axios.create({
     baseURL: `${environment.apiBasePath}/api`,
@@ -18,4 +17,4 @@ axiosInstance.interceptors.request.use(
     }
 );
 
-module.exports = axiosInstance;
+export default axiosInstance;

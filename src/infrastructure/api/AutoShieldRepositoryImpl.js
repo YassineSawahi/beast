@@ -1,6 +1,6 @@
-const AutoShield = require("../../domain/models/AutoShield");
-const axiosInstance = require("./axiosInstance");
-const AutoShieldRepository = require("../../domain/repositories/AutoShieldRepository");
+import AutoShield from "../../domain/models/AutoShield";
+import axiosInstance from "./axiosInstance";
+import AutoShieldRepository from "../../domain/repositories/AutoShieldRepository";
 
 class AutoShieldRepositoryImpl extends AutoShieldRepository {
     async fetchAutoShields() {
@@ -14,4 +14,4 @@ class AutoShieldRepositoryImpl extends AutoShieldRepository {
     }
 }
 
-module.exports = AutoShieldRepositoryImpl;
+export default AutoShieldRepositoryImpl;

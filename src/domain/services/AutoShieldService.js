@@ -25,4 +25,4 @@ class AutoShieldService {
     }
 }
 
-export default AutoShieldService; 
+export default AutoShieldService;

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { AutoShieldRepositoryImpl } from "../../infrastructure/api/AutoShieldRepositoryImpl";
+import AutoShieldRepositoryImpl from "../../infrastructure/api/AutoShieldRepositoryImpl";
 
 const repository = new AutoShieldRepositoryImpl();
 
