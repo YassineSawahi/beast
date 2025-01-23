@@ -1,4 +1,4 @@
-import AutoShieldService from './services/AutoShieldService';
+import AutoShieldService from '../services/AutoShieldService';
 
 class AutoShield {
     constructor({

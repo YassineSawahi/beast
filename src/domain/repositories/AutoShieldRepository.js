@@ -1,4 +1,4 @@
-const AutoShield = require('../models/AutoShield');
+import AutoShield from '../models/AutoShield';
 
 class AutoShieldRepository {
     /**
