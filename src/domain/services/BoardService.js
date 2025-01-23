@@ -18,9 +18,7 @@ class BoardService {
     }
 
     static processBoard(board) {
-
         this.updateBoardLocation(board);
-
         return board;
     }
 

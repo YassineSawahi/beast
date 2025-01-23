@@ -1,4 +1,4 @@
-const BoardService = require('./services/BoardService');
+import BoardService from '../services/BoardService';
 
 class Board {
     constructor({
@@ -91,4 +91,4 @@ Board.CONNECTION_STATUS = {
     DISCONNECTED: 'DISCONNECTED'
 };
 
-module.exports = Board;
+export default Board;

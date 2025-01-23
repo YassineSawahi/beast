@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AutoShieldsView from '../views/AutoShieldsView.vue'
+import BoardsView from '../views/BoardsView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -21,6 +22,11 @@ const router = createRouter({
       path: '/auto-shields',
       name: 'auto-shields',
       component: AutoShieldsView,
+    },
+    {
+      path: '/boards',
+      name: 'boards',
+      component: BoardsView,
     }
   ],
 })

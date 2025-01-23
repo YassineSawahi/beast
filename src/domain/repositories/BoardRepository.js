@@ -1,4 +1,4 @@
-const Board = require('../models/Board');
+import Board from '../models/Board';
 
 
 class BoardRepository {
@@ -20,4 +20,4 @@ class BoardRepository {
     }
 }
 
-module.exports = BoardRepository;
+export default BoardRepository;

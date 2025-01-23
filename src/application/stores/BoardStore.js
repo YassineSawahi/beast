@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { BoardRepositoryImpl } from "../../infrastructure/api/BoardRepositoryImpl";
+import BoardRepositoryImpl from "../../infrastructure/api/BoardRepositoryImpl";
 
 const repository = new BoardRepositoryImpl();
 
