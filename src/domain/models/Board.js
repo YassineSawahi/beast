@@ -2,7 +2,7 @@ import BoardService from '../services/BoardService';
 
 class Board {
     constructor({
-        externalEquipment = null,
+        externalEquipment = [],
         family,
         hostname,
         labels = null,
@@ -15,7 +15,12 @@ class Board {
         status,
         connectionStatus = Board.CONNECTION_STATUS.DISCONNECTED
     }) {
-        this.externalEquipment = externalEquipment;
+        this.externalEquipment = externalEquipment.map(eq => ({
+            fixtures: eq.fixtures || [],
+            name: eq.name,
+            serialNumber: eq.serialNumber,
+            type: eq.type
+        }));
         this.family = family;
         this.hostname = hostname;
         this.labels = labels;
@@ -33,7 +38,12 @@ class Board {
 
     static fromDB(data) {
         const board = new Board({
-            externalEquipment: data.external_equipment,
+            externalEquipment: data.external_equipment?.map(eq => ({
+                fixtures: eq.fixtures || [],
+                name: eq.name,
+                serialNumber: eq.serial_number,
+                type: eq.type
+            })) || [],
             family: data.family,
             hostname: data.hostname,
             labels: data.labels,
@@ -52,7 +62,12 @@ class Board {
 
     toDB() {
         return {
-            external_equipment: this.externalEquipment,
+            external_equipment: this.externalEquipment.map(eq => ({
+                fixtures: eq.fixtures,
+                name: eq.name,
+                serial_number: eq.serialNumber,
+                type: eq.type
+            })),
             family: this.family,
             hostname: this.hostname,
             labels: this.labels,
