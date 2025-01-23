@@ -1,10 +1,12 @@
+const BoardService = require('./services/BoardService');
+
 class Board {
     constructor({
         externalEquipment = null,
         family,
         hostname,
         labels = null,
-        location,
+        location = null,
         name,
         port,
         protocols = null,
@@ -25,10 +27,12 @@ class Board {
         this.serialNumber = serialNumber;
         this.status = status;
         this.connectionStatus = connectionStatus;
+
+        BoardService.processBoard(this);
     }
 
     static fromDB(data) {
-        return new Board({
+        const board = new Board({
             externalEquipment: data.external_equipment,
             family: data.family,
             hostname: data.hostname,
@@ -42,6 +46,8 @@ class Board {
             status: data.status,
             connectionStatus: data.connection_status
         });
+
+        return board;
     }
 
     toDB() {

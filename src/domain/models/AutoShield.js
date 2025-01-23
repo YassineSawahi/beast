@@ -1,3 +1,5 @@
+const AutoShieldService = require('./services/AutoShieldService');
+
 class AutoShield {
     constructor({
         family,
@@ -23,6 +25,8 @@ class AutoShield {
         this.status = status;
         this.target = target;
         this.connectionStatus = connectionStatus;
+
+        AutoShieldService.processShield(this);
     }
 
     static fromDB(data) {
