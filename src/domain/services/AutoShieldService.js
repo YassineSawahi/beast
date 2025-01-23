@@ -2,7 +2,7 @@ class AutoShieldService {
     static updateShieldLocation(shield) {
         const hostname = shield.hostname;
 
-        if (/^tuncxd400[1-4]\.vue\.st\.com$/.test(hostname)) {
+        if (/tuncxd400[1-4]\.tue\.st\.com/.test(hostname)) {
             shield.location = "ACTIA";
         }
         else if (hostname.startsWith('lmecxd')) {

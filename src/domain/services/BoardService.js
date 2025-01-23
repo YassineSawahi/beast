@@ -2,7 +2,7 @@ class BoardService {
     static updateBoardLocation(board) {
         const hostname = board.hostname;
 
-        if (/^tuncxd400[1-4]\.vue\.st\.com$/.test(hostname)) {
+        if (/tuncxd400[1-4]\.tue\.st\.com/.test(hostname)) {
             board.location = "ACTIA";
         }
 
