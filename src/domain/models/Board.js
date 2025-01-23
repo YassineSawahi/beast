@@ -38,7 +38,7 @@ class Board {
 
     static fromDB(data) {
         const board = new Board({
-            externalEquipment: data.external_equipment?.map(eq => ({
+            externalEquipment: data.external_equipement?.map(eq => ({
                 fixtures: eq.fixtures || [],
                 name: eq.name,
                 serialNumber: eq.serial_number,
