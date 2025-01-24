@@ -160,7 +160,6 @@ onMounted(async () => {
 .equipment-list li {
     padding: 8px;
     border-radius: 4px;
-    background-color: #f8f9fa;
     margin-bottom: 4px;
 }
 
