@@ -32,7 +32,7 @@
                         </template>
                     </Column>
 
-                    <Column field="serial_number" header="Serial Number" :sortable="true" style="min-width: 12rem">
+                    <Column field="serialNumber" header="Serial Number" :sortable="true" style="min-width: 12rem">
                         <template #filter="{ filterModel, filterCallback }">
                             <InputText v-model="filterModel.value" type="text" @input="filterCallback()"
                                 placeholder="Search by serial" class="p-column-filter" />
@@ -92,17 +92,17 @@
                         </template>
                     </Column>
 
-                    <Column field="external_equipement_str" header="External Equipment" style="min-width: 12rem">
+                    <Column field="externalEquipment" header="External Equipment" style="min-width: 12rem">
                         <template #body="{ data }">
-                            <ul v-if="isValidExternalEquipment(data.external_equipement)" class="equipment-list">
-                                <li v-for="(eq, index) in data.external_equipement" :key="index">
+                            <ul v-if="isValidExternalEquipment(data.externalEquipment)" class="equipment-list">
+                                <li v-for="(eq, index) in data.externalEquipment" :key="index">
                                     <div><strong>Name:</strong> {{ eq.name }}</div>
                                     <div><strong>Type:</strong> {{ eq.type }}</div>
-                                    <div><strong>Fixtures:</strong> {{ eq.fixtures.join(', ') }}</div>
-                                    <div><strong>Serial Number:</strong> {{ eq.serial_number }}</div>
+                                    <div><strong>Fixtures:</strong> {{ eq.fixtures?.join(', ') }}</div>
+                                    <div><strong>Serial Number:</strong> {{ eq.serialNumber }}</div>
                                 </li>
                             </ul>
-                            <span v-else>{{ data.external_equipement }}</span>
+                            <span v-else>No equipment</span>
                         </template>
                         <template #filter="{ filterModel, filterCallback }">
                             <InputText v-model="filterModel.value" type="text" @input="filterCallback()"
@@ -128,40 +128,38 @@ const boardStore = useBoardStore();
 const loading = ref(false);
 
 const filterFields = [
-    'name', 'family', 'serial_number', 'external_equipement_str',
-    'labels', 'hostname', 'location', 'port', 'status', 'connection_status'
+    'name', 'family', 'serialNumber', 'externalEquipment',
+    'labels', 'hostname', 'location', 'port', 'status', 'connectionStatus'
 ];
 
 const filters = ref({
     global: { value: null, matchMode: 'contains' },
     name: { value: null, matchMode: 'contains' },
     family: { value: null, matchMode: 'contains' },
-    serial_number: { value: null, matchMode: 'contains' },
+    serialNumber: { value: null, matchMode: 'contains' },
     hostname: { value: null, matchMode: 'contains' },
     location: { value: null, matchMode: 'contains' },
-    connection_status: { value: null, matchMode: 'contains' },
+    connectionStatus: { value: null, matchMode: 'contains' },
     port: { value: null, matchMode: 'contains' },
     status: { value: null, matchMode: 'contains' },
-    external_equipement_str: { value: null, matchMode: 'contains' }
+    externalEquipment: { value: null, matchMode: 'contains' }
 });
 
 const processedBoards = computed(() => {
     if (!boardStore.boards) return [];
-    return boardStore.boards.map(board => ({
-        ...board,
-        external_equipement_str: processExternalEquipment(board.external_equipement)
-    }));
-});
+    return boardStore.boards.map(board => {
+        // Create a searchable string for external equipment
+        const externalEquipmentStr = board.externalEquipment?.map(eq =>
+            `${eq.name} ${eq.type} ${eq.fixtures?.join(' ')} ${eq.serialNumber}`
+        ).join(' ') || '';
 
-function processExternalEquipment(equipment) {
-    if (!equipment) return '';
-    if (typeof equipment === 'object' && equipment?.length > 0) {
-        return equipment.map(eq =>
-            `Name: ${eq.name}, Type: ${eq.type}, Fixtures: ${eq.fixtures?.join(', ')}, Serial Number: ${eq.serial_number}`
-        ).join('; ');
-    }
-    return String(equipment);
-}
+        return {
+            ...board,
+            // Add the searchable string as a property
+            externalEquipmentStr
+        };
+    });
+});
 
 const isValidExternalEquipment = (equipment) => {
     return Array.isArray(equipment) && equipment.length > 0;

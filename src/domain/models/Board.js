@@ -97,7 +97,7 @@ class Board {
 }
 
 Board.STATUS = {
-    RESERVED: 'RESERVED',
+    LOCKED: 'LOCKED',
     UNLOCKED: 'UNLOCKED',
 };
 
