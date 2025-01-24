@@ -92,10 +92,10 @@
                         </template>
                     </Column>
 
-                    <Column field="externalEquipment" header="External Equipment" style="min-width: 12rem">
+                    <Column field="external_equipement_str" header="External Equipment" style="min-width: 12rem">
                         <template #body="{ data }">
-                            <ul v-if="isValidExternalEquipment(data.externalEquipment)" class="equipment-list">
-                                <li v-for="(eq, index) in data.externalEquipment" :key="index">
+                            <ul v-if="isValidExternalEquipment(data.external_equipement)" class="equipment-list">
+                                <li v-for="(eq, index) in data.external_equipement" :key="index">
                                     <div><strong>Name:</strong> {{ eq.name }}</div>
                                     <div><strong>Type:</strong> {{ eq.type }}</div>
                                     <div><strong>Fixtures:</strong> {{ eq.fixtures?.join(', ') }}</div>
