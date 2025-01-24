@@ -32,7 +32,7 @@
                         </template>
                     </Column>
 
-                    <Column field="serial_number" header="Serial Number" :sortable="true" style="min-width: 12rem">
+                    <Column field="serialNumber" header="Serial Number" :sortable="true" style="min-width: 12rem">
                         <template #filter="{ filterModel, filterCallback }">
                             <InputText v-model="filterModel.value" type="text" @input="filterCallback()"
                                 placeholder="Search by serial" class="p-column-filter" />
