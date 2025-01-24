@@ -1,18 +1,17 @@
 <template>
     <div class="setup">
+        
     </div>
 </template>
 
-<script>
+<script setup>
+import { onMounted } from 'vue';
 import { useSetupStore } from '@/application/stores/SetupStore';
 
-export default {
-    name: 'SetupView',
+const setupStore = useSetupStore();
 
-    async mounted() {
-        const setupStore = useSetupStore();
-        await setupStore.fetchSetups();
-        console.log('Setups:', setupStore.setups);
-    }
-};
+onMounted(async () => {
+    await setupStore.fetchSetups();
+    console.log('Setups:', setupStore.setups);
+});
 </script>

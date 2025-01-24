@@ -1,18 +1,16 @@
 <template>
-  <div class="auto-shields">
-  </div>
+    <div class="auto-shields">
+    </div>
 </template>
 
-<script>
+<script setup>
+import { onMounted } from 'vue';
 import { useAutoShieldStore } from '@/application/stores/AutoShieldStore';
 
-export default {
-  name: 'AutoShieldsView',
+const autoShieldStore = useAutoShieldStore();
 
-  async mounted() {
-    const autoShieldStore = useAutoShieldStore();
+onMounted(async () => {
     await autoShieldStore.fetchAutoShields();
     console.log('Auto Shields:', autoShieldStore.autoShields);
-  }
-};
+});
 </script>
