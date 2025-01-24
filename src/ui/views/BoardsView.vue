@@ -98,15 +98,15 @@ const filters = ref({
 const boards = computed(() => {
     return boardStore.boards.map(board => {
         const processedBoard = { ...board };
-        console.log("Booooard: ", board);
+        // console.log("Booooard: ", board);
 
-        if (typeof board.external_equipement === 'object' && board.external_equipement.length > 0) {
-            processedBoard.external_equipement_str = board.external_equipement.map(eq =>
-                `Name: ${eq.name}, Type: ${eq.type}, Fixtures: ${eq.fixtures.join(', ')}, Serial Number: ${eq.serial_number}`
-            ).join('; ');
-        } else {
-            processedBoard.external_equipement_str = board.external_equipement;
-        }
+        // if (typeof board.external_equipement === 'object' && board.external_equipement.length > 0) {
+        //     processedBoard.external_equipement_str = board.external_equipement.map(eq =>
+        //         `Name: ${eq.name}, Type: ${eq.type}, Fixtures: ${eq.fixtures.join(', ')}, Serial Number: ${eq.serial_number}`
+        //     ).join('; ');
+        // } else {
+        //     processedBoard.external_equipement_str = board.external_equipement;
+        // }
 
         return processedBoard;
     });
