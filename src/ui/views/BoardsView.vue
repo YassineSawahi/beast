@@ -92,6 +92,7 @@ const filters = ref({
 const boards = computed(() => {
     return boardStore.boards.map(board => {
         const processedBoard = { ...board };
+        console.log("Booooard: ", board);
 
         if (typeof board.external_equipement === 'object' && board.external_equipement.length > 0) {
             processedBoard.external_equipement_str = board.external_equipement.map(eq =>
