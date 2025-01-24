@@ -5,7 +5,7 @@
         </div> -->
         <div style="display: flex; flex-direction: column; gap: 20px">
             <div style="width: 100%">
-                <DataTable v-model:filters="filters" :value="processedBoards" :paginator="true" :rows="10"
+                <DataTable v-model:filters="filters" :value="boardStore.boards" :paginator="true" :rows="10"
                     dataKey="serial_number" filterDisplay="row" :loading="loading" :globalFilterFields="filterFields"
                     emptyMessage="NO BOARD FOUND">
                     <template #header>
@@ -32,7 +32,7 @@
                         </template>
                     </Column>
 
-                    <Column field="serial_number" header="Serial Number" :sortable="true" style="min-width: 12rem">
+                    <Column field="serialNumber" header="Serial Number" :sortable="true" style="min-width: 12rem">
                         <template #filter="{ filterModel, filterCallback }">
                             <InputText v-model="filterModel.value" type="text" @input="filterCallback()"
                                 placeholder="Search by serial" class="p-column-filter" />
@@ -53,12 +53,12 @@
                         </template>
                     </Column>
 
-                    <Column field="connection_status" header="Connection Status" :sortable="true"
+                    <Column field="connectionStatus" header="Connection Status" :sortable="true"
                         :showFilterMenu="false" style="min-width: 12rem">
                         <template #body="{ data }">
                             <span
-                                :class="['status-text', data.connection_status === 'CONNECTED' ? 'connected' : 'disconnected']">
-                                {{ data.connection_status }}
+                                :class="['status-text', data.connectionStatus === 'CONNECTED' ? 'CONNECTED' : 'DISCONNECTED']">
+                                {{ data.connectionStatus }}
                             </span>
                         </template>
                         <template #filter="{ filterModel, filterCallback }">
@@ -81,25 +81,25 @@
                     <Column field="status" header="Board Status" :sortable="true" :showFilterMenu="false"
                         style="min-width: 12rem">
                         <template #body="{ data }">
-                            <span :class="['status-text', data.status === 'UNLOCKED' ? 'unlocked' : 'locked']">
+                            <span :class="['status-text', data.status === 'UNLOCKED' ? 'UNLOCKED' : 'LOCKED']">
                                 {{ data.status }}
                             </span>
                         </template>
                         <template #filter="{ filterModel, filterCallback }">
                             <Dropdown v-model="filterModel.value" @change="filterCallback()"
-                                :options="['RESERVED', 'UNLOCKED']" placeholder="Select Status" class="p-column-filter"
+                                :options="['LOCKED', 'UNLOCKED']" placeholder="Select Status" class="p-column-filter"
                                 :showClear="true" />
                         </template>
                     </Column>
 
                     <Column field="external_equipement_str" header="External Equipment" style="min-width: 12rem">
                         <template #body="{ data }">
-                            <ul v-if="isValidExternalEquipment(data.external_equipement)" class="equipment-list">
-                                <li v-for="(eq, index) in data.external_equipement" :key="index">
-                                    <div><strong>Name:</strong> {{ eq.name }}</div>
-                                    <div><strong>Type:</strong> {{ eq.type }}</div>
-                                    <div><strong>Fixtures:</strong> {{ eq.fixtures.join(', ') }}</div>
-                                    <div><strong>Serial Number:</strong> {{ eq.serial_number }}</div>
+                            <ul v-if="isValidExternalEquipment(data.externalEquipment)" class="equipment-list">
+                                <li v-for="(eq, index) in data.externalEquipment" :key="index">
+                                    <div><strong>Name:</strong> {{ eq?.name }}</div>
+                                    <div><strong>Type:</strong> {{ eq?.type }}</div>
+                                    <div><strong>Fixtures:</strong> {{ eq?.fixtures.join(", ") }}</div>
+                                    <div><strong>Serial Number:</strong> {{ eq?.serialNumber }}</div>
                                 </li>
                             </ul>
                             <span v-else>{{ data.external_equipement }}</span>
@@ -136,32 +136,14 @@ const filters = ref({
     global: { value: null, matchMode: 'contains' },
     name: { value: null, matchMode: 'contains' },
     family: { value: null, matchMode: 'contains' },
-    serial_number: { value: null, matchMode: 'contains' },
+    serialNumber: { value: null, matchMode: 'contains' },
     hostname: { value: null, matchMode: 'contains' },
     location: { value: null, matchMode: 'contains' },
-    connection_status: { value: null, matchMode: 'contains' },
+    connectionStatus: { value: null, matchMode: 'equals' },
     port: { value: null, matchMode: 'contains' },
-    status: { value: null, matchMode: 'contains' },
+    status: { value: null, matchMode: 'equals' },
     external_equipement_str: { value: null, matchMode: 'contains' }
 });
-
-const processedBoards = computed(() => {
-    if (!boardStore.boards) return [];
-    return boardStore.boards.map(board => ({
-        ...board,
-        external_equipement_str: processExternalEquipment(board.external_equipement)
-    }));
-});
-
-function processExternalEquipment(equipment) {
-    if (!equipment) return '';
-    if (typeof equipment === 'object' && equipment?.length > 0) {
-        return equipment.map(eq =>
-            `Name: ${eq.name}, Type: ${eq.type}, Fixtures: ${eq.fixtures?.join(', ')}, Serial Number: ${eq.serial_number}`
-        ).join('; ');
-    }
-    return String(equipment);
-}
 
 const isValidExternalEquipment = (equipment) => {
     return Array.isArray(equipment) && equipment.length > 0;
@@ -175,6 +157,7 @@ onMounted(async () => {
         console.error('Error loading boards:', error);
     } finally {
         loading.value = false;
+        console.log(boardStore.boards)
     }
 });
 </script>
