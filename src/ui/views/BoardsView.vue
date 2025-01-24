@@ -7,63 +7,61 @@
             <div style="width: 100%">
                 <DataTable :value="processedBoards" :paginator="true" :rows="10" dataKey="serial_number"
                     :filters="filters" filterDisplay="row" :loading="loading" :globalFilterFields="filterFields"
-                    @filter="onFilter" emptyMessage="NO BOARD FOUND">
+                    emptyMessage="NO BOARD FOUND">
                     <template #header>
                         <span class="text-xl">MCU DISPATCHER - Boards</span>
                     </template>
 
-                    <Column field="name" header="Board name" :sortable="true" :filter="true" style="min-width: 12rem"
-                        filterField="name">
-                        <template #filter="{ filterModel, filterCallback }">
-                            <InputText v-model="filterModel.value" @input="filterCallback()"
-                                placeholder="Search by board" class="p-column-filter" />
+                    <Column field="name" header="Board name" :sortable="true" :filter="true" style="min-width: 12rem">
+                        <template #filter>
+                            <InputText type="text" v-model="filters.name.value" class="p-column-filter"
+                                placeholder="Search by board" />
                         </template>
                     </Column>
 
                     <Column field="family" header="Board family" :sortable="true" :filter="true"
-                        style="min-width: 12rem" filterField="family">
-                        <template #filter="{ filterModel, filterCallback }">
-                            <InputText v-model="filterModel.value" @input="filterCallback()"
-                                placeholder="Search by family" class="p-column-filter" />
+                        style="min-width: 12rem">
+                        <template #filter>
+                            <InputText type="text" v-model="filters.family.value" class="p-column-filter"
+                                placeholder="Search by family" />
                         </template>
                     </Column>
 
                     <Column field="serial_number" header="Serial Number" :sortable="true" :filter="true"
-                        style="min-width: 12rem" filterField="serial_number">
-                        <template #filter="{ filterModel, filterCallback }">
-                            <InputText v-model="filterModel.value" @input="filterCallback()"
-                                placeholder="Search by serial" class="p-column-filter" />
+                        style="min-width: 12rem">
+                        <template #filter>
+                            <InputText type="text" v-model="filters.serial_number.value" class="p-column-filter"
+                                placeholder="Search by serial" />
                         </template>
                     </Column>
 
                     <Column field="hostname" header="Host Name" :sortable="true" :filter="true" style="min-width: 12rem"
                         filterField="hostname">
-                        <template #filter="{ filterModel, filterCallback }">
-                            <InputText v-model="filterModel.value" @input="filterCallback()"
-                                placeholder="Search by hostname" class="p-column-filter" />
+                        <template #filter>
+                            <InputText type="text" v-model="filters.hostname.value" class="p-column-filter"
+                                placeholder="Search by hostname" />
                         </template>
                     </Column>
 
                     <Column field="location" header="Location" :sortable="true" :filter="true" style="min-width: 12rem"
                         filterField="location">
-                        <template #filter="{ filterModel, filterCallback }">
-                            <InputText v-model="filterModel.value" @input="filterCallback()"
-                                placeholder="Search by location" class="p-column-filter" />
+                        <template #filter>
+                            <InputText type="text" v-model="filters.location.value" class="p-column-filter"
+                                placeholder="Search by location" />
                         </template>
                     </Column>
 
                     <Column field="connection_status" header="Connection Status" :sortable="true" :filter="true"
-                        filterField="connection_status" style="min-width: 12rem">
+                        style="min-width: 12rem">
                         <template #body="{ data }">
                             <span
                                 :class="['status-text', data.connection_status === 'CONNECTED' ? 'connected' : 'disconnected']">
                                 {{ data.connection_status }}
                             </span>
                         </template>
-                        <template #filter="{ filterModel }">
-                            <Dropdown v-model="filterModel.value" :options="['CONNECTED', 'DISCONNECTED']"
-                                placeholder="Select Status" class="p-column-filter" :showClear="true"
-                                @change="onFilterChange($event, 'connection_status')" />
+                        <template #filter>
+                            <Dropdown v-model="filters.connection_status.value" :options="['CONNECTED', 'DISCONNECTED']"
+                                placeholder="Select Status" class="p-column-filter" :showClear="true" />
                         </template>
                     </Column>
 
@@ -82,8 +80,8 @@
                                 {{ data.status }}
                             </span>
                         </template>
-                        <template #filter="{ filterModel }">
-                            <Dropdown v-model="filterModel.value" :options="['RESERVED', 'UNLOCKED']"
+                        <template #filter>
+                            <Dropdown v-model="filters.status.value" :options="['RESERVED', 'UNLOCKED']"
                                 placeholder="Select Status" class="p-column-filter" :showClear="true"
                                 @change="onFilterChange($event, 'status')" />
                         </template>
@@ -128,7 +126,6 @@ const filterFields = [
 ];
 
 const filters = ref({
-    global: { value: null, matchMode: 'contains' },
     name: { value: null, matchMode: 'contains' },
     family: { value: null, matchMode: 'contains' },
     revision: { value: null, matchMode: 'contains' },
@@ -139,17 +136,8 @@ const filters = ref({
     location: { value: null, matchMode: 'contains' },
     port: { value: null, matchMode: 'contains' },
     status: { value: null, matchMode: 'contains' },
-    connection_status: { value: null, matchMode: 'contains' },
+    connection_status: { value: null, matchMode: 'equals' },
 });
-
-const onFilter = (event) => {
-    filters.value = event.filters;
-};
-
-const onFilterChange = (event, field) => {
-    const value = event?.target?.value ?? event;
-    filters.value[field] = { value, matchMode: 'contains' };
-};
 
 const processedBoards = computed(() => {
     if (!boardStore.boards) return [];
