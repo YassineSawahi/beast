@@ -73,7 +73,13 @@ import Column from 'primevue/column';
 //import LoadingScreen from '@/components/LoadingScreen.vue';
 
 const boardStore = useBoardStore();
-const loading = ref(true);
+const loading = ref(false);
+
+onMounted(async () => {
+    await boardStore.fetchBoards();
+    loading.value = false;
+});
+
 const filters = ref({
     global: { value: null, matchMode: 'contains' },
     name: { value: null, matchMode: 'contains' },
@@ -113,11 +119,6 @@ const isValidExternalEquipment = (equipment) => {
 const onFilter = (event) => {
     filters.value = event.filters;
 };
-
-onMounted(async () => {
-    await boardStore.fetchBoards();
-    loading.value = false;
-});
 </script>
 
 <style scoped>
