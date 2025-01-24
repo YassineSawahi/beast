@@ -5,50 +5,78 @@
         </div> -->
         <div style="display: flex; flex-direction: column; gap: 20px">
             <div style="width: 100%">
-                <DataTable :value="processedBoards" :paginator="true" :rows="10" dataKey="serialNumber"
-                    :filters="filters" filterDisplay="row" :loading="loading" emptyMessage="NO BOARD FOUND">
+                <DataTable :value="processedBoards" :paginator="true" :rows="10" dataKey="serial_number"
+                    :filters="filters" filterDisplay="row" :loading="loading" :globalFilterFields="filterFields"
+                    @filter="onFilter" emptyMessage="NO BOARD FOUND">
                     <template #header>
                         <span class="text-xl">MCU DISPATCHER - Boards</span>
                     </template>
 
-                    <Column field="name" header="Board name" :sortable="true" :filter="true"
-                        filterPlaceholder="Search by name" filterField="name" style="min-width: 12rem" />
+                    <Column field="name" header="Board name" :sortable="true" :filter="true" style="min-width: 12rem"
+                        filterField="name">
+                        <template #filter="{ filterModel, filterCallback }">
+                            <InputText v-model="filterModel.value" @input="filterCallback()"
+                                placeholder="Search by board" class="p-column-filter" />
+                        </template>
+                    </Column>
 
                     <Column field="family" header="Board family" :sortable="true" :filter="true"
-                        filterPlaceholder="Search by family" style="min-width: 12rem" />
+                        style="min-width: 12rem" filterField="family">
+                        <template #filter="{ filterModel, filterCallback }">
+                            <InputText v-model="filterModel.value" @input="filterCallback()"
+                                placeholder="Search by family" class="p-column-filter" />
+                        </template>
+                    </Column>
 
-                    <Column field="serialNumber" header="Serial Number" :sortable="true" :filter="true"
-                        filterPlaceholder="Search by serial" style="min-width: 12rem" />
+                    <Column field="serial_number" header="Serial Number" :sortable="true" :filter="true"
+                        style="min-width: 12rem" filterField="serial_number">
+                        <template #filter="{ filterModel, filterCallback }">
+                            <InputText v-model="filterModel.value" @input="filterCallback()"
+                                placeholder="Search by serial" class="p-column-filter" />
+                        </template>
+                    </Column>
 
-                    <Column field="hostname" header="Host Name" :sortable="true" :filter="true"
-                        filterPlaceholder="Search by hostname" style="min-width: 12rem" />
+                    <Column field="hostname" header="Host Name" :sortable="true" :filter="true" style="min-width: 12rem"
+                        filterField="hostname">
+                        <template #filter="{ filterModel, filterCallback }">
+                            <InputText v-model="filterModel.value" @input="filterCallback()"
+                                placeholder="Search by hostname" class="p-column-filter" />
+                        </template>
+                    </Column>
 
-                    <Column field="location" header="Location" :sortable="true" :filter="true"
-                        filterPlaceholder="Search by location" style="min-width: 12rem" />
+                    <Column field="location" header="Location" :sortable="true" :filter="true" style="min-width: 12rem"
+                        filterField="location">
+                        <template #filter="{ filterModel, filterCallback }">
+                            <InputText v-model="filterModel.value" @input="filterCallback()"
+                                placeholder="Search by location" class="p-column-filter" />
+                        </template>
+                    </Column>
 
-                    <Column field="connectionStatus" header="Connection Status" :sortable="true" :filter="true"
-                        filterElement="dropdown" style="min-width: 12rem">
+                    <Column field="connection_status" header="Connection Status" :sortable="true" :filter="true"
+                        filterField="connection_status" style="min-width: 12rem">
                         <template #body="{ data }">
                             <span
-                                :class="['status-text', data.connectionStatus === 'CONNECTED' ? 'connected' : 'disconnected']">
-                                {{ data.connectionStatus }}
+                                :class="['status-text', data.connection_status === 'CONNECTED' ? 'connected' : 'disconnected']">
+                                {{ data.connection_status }}
                             </span>
                         </template>
                         <template #filter="{ filterModel }">
                             <Dropdown v-model="filterModel.value" :options="['CONNECTED', 'DISCONNECTED']"
-                                placeholder="Select Status" class="p-column-filter" :showClear="true" />
+                                placeholder="Select Status" class="p-column-filter" :showClear="true"
+                                @change="onFilterChange($event, 'connection_status')" />
                         </template>
                     </Column>
 
                     <Column field="port" header="Port" :sortable="true" :filter="true"
-                        filterPlaceholder="Search by port" style="min-width: 12rem">
+                        filterPlaceholder="Search by port" style="min-width: 12rem" filterField="port"
+                        @filter-apply-click="onFilterChange">
                         <template #body="{ data }">
                             {{ data.port.replace('/dev/', '') }}
                         </template>
                     </Column>
 
-                    <Column field="status" header="Board Status" :sortable="true" :filter="true"
-                        filterElement="dropdown" style="min-width: 12rem">
+                    <Column field="status" header="Board Status" :sortable="true" :filter="true" filterField="status"
+                        style="min-width: 12rem">
                         <template #body="{ data }">
                             <span :class="['status-text', data.status === 'UNLOCKED' ? 'unlocked' : 'locked']">
                                 {{ data.status }}
@@ -56,22 +84,24 @@
                         </template>
                         <template #filter="{ filterModel }">
                             <Dropdown v-model="filterModel.value" :options="['RESERVED', 'UNLOCKED']"
-                                placeholder="Select Status" class="p-column-filter" :showClear="true" />
+                                placeholder="Select Status" class="p-column-filter" :showClear="true"
+                                @change="onFilterChange($event, 'status')" />
                         </template>
                     </Column>
 
-                    <Column field="externalEquipment" header="External Equipment" :filter="true"
-                        filterPlaceholder="Search equipment" style="min-width: 12rem">
+                    <Column field="external_equipement_str" header="External Equipment" :filter="true"
+                        filterPlaceholder="Search equipment" style="min-width: 12rem"
+                        filterField="external_equipement_str" @filter-apply-click="onFilterChange">
                         <template #body="{ data }">
-                            <ul v-if="isValidExternalEquipment(data.externalEquipment)" class="equipment-list">
-                                <li v-for="(eq, index) in data.externalEquipment" :key="index">
+                            <ul v-if="isValidExternalEquipment(data.external_equipement)" class="equipment-list">
+                                <li v-for="(eq, index) in data.external_equipement" :key="index">
                                     <div><strong>Name:</strong> {{ eq.name }}</div>
                                     <div><strong>Type:</strong> {{ eq.type }}</div>
                                     <div><strong>Fixtures:</strong> {{ eq.fixtures.join(', ') }}</div>
-                                    <div><strong>Serial Number:</strong> {{ eq.serialNumber }}</div>
+                                    <div><strong>Serial Number:</strong> {{ eq.serial_number }}</div>
                                 </li>
                             </ul>
-                            <span v-else>No equipment</span>
+                            <span v-else>{{ data.external_equipement }}</span>
                         </template>
                     </Column>
                 </DataTable>
@@ -86,27 +116,58 @@ import { useBoardStore } from '@/application/stores/BoardStore';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Dropdown from 'primevue/dropdown';
+import InputText from 'primevue/inputtext';
 //import LoadingScreen from '@/components/LoadingScreen.vue';
 
 const boardStore = useBoardStore();
 const loading = ref(false);
 
+const filterFields = [
+    'name', 'family', 'serial_number', 'external_equipement_str',
+    'labels', 'hostname', 'location', 'port', 'status', 'connection_status'
+];
+
 const filters = ref({
+    global: { value: null, matchMode: 'contains' },
     name: { value: null, matchMode: 'contains' },
     family: { value: null, matchMode: 'contains' },
-    serialNumber: { value: null, matchMode: 'contains' },
+    revision: { value: null, matchMode: 'contains' },
+    serial_number: { value: null, matchMode: 'contains' },
+    external_equipement_str: { value: null, matchMode: 'contains' },
+    labels: { value: null, matchMode: 'contains' },
     hostname: { value: null, matchMode: 'contains' },
     location: { value: null, matchMode: 'contains' },
-    connectionStatus: { value: null, matchMode: 'equals' },
     port: { value: null, matchMode: 'contains' },
-    status: { value: null, matchMode: 'equals' },
-    externalEquipment: { value: null, matchMode: 'contains' }
+    status: { value: null, matchMode: 'contains' },
+    connection_status: { value: null, matchMode: 'contains' },
 });
+
+const onFilter = (event) => {
+    filters.value = event.filters;
+};
+
+const onFilterChange = (event, field) => {
+    const value = event?.target?.value ?? event;
+    filters.value[field] = { value, matchMode: 'contains' };
+};
 
 const processedBoards = computed(() => {
     if (!boardStore.boards) return [];
-    return boardStore.boards;
+    return boardStore.boards.map(board => ({
+        ...board,
+        external_equipement_str: processExternalEquipment(board.external_equipement)
+    }));
 });
+
+function processExternalEquipment(equipment) {
+    if (!equipment) return '';
+    if (typeof equipment === 'object' && equipment?.length > 0) {
+        return equipment.map(eq =>
+            `Name: ${eq.name}, Type: ${eq.type}, Fixtures: ${eq.fixtures?.join(', ')}, Serial Number: ${eq.serial_number}`
+        ).join('; ');
+    }
+    return String(equipment);
+}
 
 const isValidExternalEquipment = (equipment) => {
     return Array.isArray(equipment) && equipment.length > 0;
@@ -168,6 +229,11 @@ onMounted(async () => {
 }
 
 :deep(.p-column-filter) {
+    width: 100%;
+    padding: 0.5rem;
+}
+
+:deep(.p-inputtext) {
     width: 100%;
 }
 
