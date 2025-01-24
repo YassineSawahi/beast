@@ -92,17 +92,17 @@
                         </template>
                     </Column>
 
-                    <Column field="external_equipement" header="External Equipment" style="min-width: 12rem">
+                    <Column field="external_equipement_str" header="External Equipment" style="min-width: 12rem">
                         <template #body="{ data }">
-                            <ul v-if="isValidExternalEquipment(data.external_equipment)" class="equipment-list">
-                                <li v-for="(eq, index) in data.external_equipment" :key="index">
+                            <ul v-if="isValidExternalEquipment(data.external_equipement)" class="equipment-list">
+                                <li v-for="(eq, index) in data.external_equipement" :key="index">
                                     <div><strong>Name:</strong> {{ eq.name }}</div>
                                     <div><strong>Type:</strong> {{ eq.type }}</div>
-                                    <div><strong>Fixtures:</strong> {{ eq.fixtures?.join(', ') }}</div>
+                                    <div><strong>Fixtures:</strong> {{ eq.fixtures.join(', ') }}</div>
                                     <div><strong>Serial Number:</strong> {{ eq.serial_number }}</div>
                                 </li>
                             </ul>
-                            <span v-else>No equipment</span>
+                            <span v-else>{{ data.external_equipement }}</span>
                         </template>
                         <template #filter="{ filterModel, filterCallback }">
                             <InputText v-model="filterModel.value" type="text" @input="filterCallback()"
@@ -147,30 +147,20 @@ const filters = ref({
 
 const processedBoards = computed(() => {
     if (!boardStore.boards) return [];
-    return boardStore.boards.map(board => {
-        // Create a copy of the board with camelCase field names
-        const processedBoard = {
-            ...board,
-            externalEquipment: board.external_equipement?.map(eq => ({
-                name: eq.name,
-                type: eq.type,
-                fixtures: eq.fixtures || [],
-                serialNumber: eq.serial_number
-            })) || [],
-            external_equipement_str: processExternalEquipment(board.external_equipement)
-        };
-        return processedBoard;
-    });
+    return boardStore.boards.map(board => ({
+        ...board,
+        external_equipement_str: processExternalEquipment(board.external_equipement)
+    }));
 });
 
 function processExternalEquipment(equipment) {
     if (!equipment) return '';
-    if (Array.isArray(equipment) && equipment.length > 0) {
+    if (typeof equipment === 'object' && equipment?.length > 0) {
         return equipment.map(eq =>
             `Name: ${eq.name}, Type: ${eq.type}, Fixtures: ${eq.fixtures?.join(', ')}, Serial Number: ${eq.serial_number}`
         ).join('; ');
     }
-    return 'No equipment';
+    return String(equipment);
 }
 
 const isValidExternalEquipment = (equipment) => {
@@ -225,7 +215,6 @@ onMounted(async () => {
 .equipment-list li {
     padding: 8px;
     border-radius: 4px;
-    background-color: #f8f9fa;
     margin-bottom: 4px;
 }
 
