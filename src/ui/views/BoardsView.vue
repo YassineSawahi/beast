@@ -5,10 +5,9 @@
         </div> -->
         <div style="display: flex; flex-direction: column; gap: 20px">
             <div style="width: 100%">
-                <DataTable :value="boards" :paginator="true" :rows="10" dataKey="serial_number" :filters="filters"
-                    filterDisplay="row" :loading="loading"
-                    :globalFilterFields="['name', 'family', 'serial_number', 'external_equipement_str', 'labels', 'hostname', 'location', 'port', 'status', 'connection_status']"
-                    emptyMessage="NO BOARD FOUND" @filter="onFilter">
+                <DataTable :value="processedBoards" :paginator="true" :rows="10" dataKey="serial_number"
+                    :filters="filters" filterDisplay="row" :loading="loading" :globalFilterFields="filterFields"
+                    emptyMessage="NO BOARD FOUND">
                     <template #header>
                         <span style="color: black; font-weight: bold; font-size: 18px">MCU DISPATCHER - Boards</span>
                     </template>
@@ -66,7 +65,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, markRaw } from 'vue';
 import { useBoardStore } from '@/application/stores/BoardStore';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
@@ -75,10 +74,10 @@ import Column from 'primevue/column';
 const boardStore = useBoardStore();
 const loading = ref(false);
 
-onMounted(async () => {
-    await boardStore.fetchBoards();
-    loading.value = false;
-});
+const filterFields = markRaw([
+    'name', 'family', 'serial_number', 'external_equipement_str',
+    'labels', 'hostname', 'location', 'port', 'status', 'connection_status'
+]);
 
 const filters = ref({
     global: { value: null, matchMode: 'contains' },
@@ -95,30 +94,38 @@ const filters = ref({
     connection_status: { value: null, matchMode: 'contains' },
 });
 
-const boards = computed(() => {
-    return boardStore.boards.map(board => {
-        const processedBoard = { ...board };
-        // console.log("Booooard: ", board);
-
-        // if (typeof board.external_equipement === 'object' && board.external_equipement.length > 0) {
-        //     processedBoard.external_equipement_str = board.external_equipement.map(eq =>
-        //         `Name: ${eq.name}, Type: ${eq.type}, Fixtures: ${eq.fixtures.join(', ')}, Serial Number: ${eq.serial_number}`
-        //     ).join('; ');
-        // } else {
-        //     processedBoard.external_equipement_str = board.external_equipement;
-        // }
-
-        return processedBoard;
-    });
+const processedBoards = computed(() => {
+    if (!boardStore.boards) return [];
+    return boardStore.boards.map(board => ({
+        ...board,
+        external_equipement_str: processExternalEquipment(board.external_equipement)
+    }));
 });
 
+function processExternalEquipment(equipment) {
+    if (!equipment) return '';
+    if (typeof equipment === 'object' && equipment?.length > 0) {
+        return equipment.map(eq =>
+            `Name: ${eq.name}, Type: ${eq.type}, Fixtures: ${eq.fixtures?.join(', ')}, Serial Number: ${eq.serial_number}`
+        ).join('; ');
+    }
+    return String(equipment);
+}
+
 const isValidExternalEquipment = (equipment) => {
-    return typeof equipment === 'object' && equipment.length > 0;
+    return typeof equipment === 'object' && equipment?.length > 0;
 };
 
-const onFilter = (event) => {
-    filters.value = event.filters;
-};
+onMounted(async () => {
+    try {
+        loading.value = true;
+        await boardStore.fetchBoards();
+    } catch (error) {
+        console.error('Error loading boards:', error);
+    } finally {
+        loading.value = false;
+    }
+});
 </script>
 
 <style scoped>
