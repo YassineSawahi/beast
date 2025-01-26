@@ -72,7 +72,7 @@
                                     <div><strong>Name:</strong> {{ board.name }}</div>
                                     <div><strong>Family:</strong> {{ board.family }}</div>
                                     <div><strong>Serial Number:</strong> {{ board.serialNumber }}</div>
-                                    <div><strong>Port:</strong> {{ board.port }}</div>
+                                    <div><strong>Port:</strong> {{ board.port.replace('/dev/', '') }}</div>
                                     <div><strong>Revision:</strong> {{ board.revision }}</div>
                                 </li>
                             </ul>
@@ -91,7 +91,7 @@
                                     <div><strong>Name:</strong> {{ board.name }}</div>
                                     <div><strong>Family:</strong> {{ board.family }}</div>
                                     <div><strong>Serial Number:</strong> {{ board.serialNumber }}</div>
-                                    <div><strong>Port:</strong> {{ board.port }}</div>
+                                    <div><strong>Port:</strong> {{ board.port.replace('/dev/', '') }}</div>
                                     <div><strong>Revision:</strong> {{ board.revision }}</div>
                                 </li>
                             </ul>
