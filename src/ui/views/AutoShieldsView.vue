@@ -78,13 +78,13 @@
                     <Column field="status" header="Shield Status" :sortable="true" :showFilterMenu="false"
                         style="min-width: 12rem">
                         <template #body="{ data }">
-                            <span :class="['status-text', data.status === 'UNLOCKED' ? 'UNLOCKED' : 'LOCKED']">
+                            <span :class="['status-text', data.status === 'UNLOCKED' ? 'unlocked' : 'locked']">
                                 {{ data.status }}
                             </span>
                         </template>
                         <template #filter="{ filterModel, filterCallback }">
                             <Dropdown v-model="filterModel.value" @change="filterCallback()"
-                                :options="['LOCKED', 'UNLOCKED']" placeholder="Select Status" class="p-column-filter"
+                                :options="['RESERVED', 'UNLOCKED']" placeholder="Select Status" class="p-column-filter"
                                 :showClear="true" />
                         </template>
                     </Column>
@@ -149,6 +149,7 @@ onMounted(async () => {
         console.error('Error loading auto shields:', error);
     } finally {
         loading.value = false;
+        console.log(autoShieldStore.autoShields)
     }
 });
 </script>

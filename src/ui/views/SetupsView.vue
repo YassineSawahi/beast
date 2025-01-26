@@ -54,7 +54,7 @@
                     <Column field="status" header="Setup Status" :sortable="true" :showFilterMenu="false"
                         style="min-width: 12rem">
                         <template #body="{ data }">
-                            <span :class="['status-text', data.status === 'UNLOCKED' ? 'UNLOCKED' : 'LOCKED']">
+                            <span :class="['status-text', data.status === 'UNLOCKED' ? 'unlocked' : 'locked']">
                                 {{ data.status }}
                             </span>
                         </template>
@@ -143,6 +143,7 @@ onMounted(async () => {
         console.error('Error loading setups:', error);
     } finally {
         loading.value = false;
+        console.log(setupStore.setups)
     }
 });
 </script>

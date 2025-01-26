@@ -57,7 +57,7 @@
                         :showFilterMenu="false" style="min-width: 12rem">
                         <template #body="{ data }">
                             <span
-                                :class="['status-text', data.connectionStatus === 'CONNECTED' ? 'CONNECTED' : 'DISCONNECTED']">
+                                :class="['status-text', data.connectionStatus === 'CONNECTED' ? 'connected' : 'disconnected']">
                                 {{ data.connectionStatus }}
                             </span>
                         </template>
@@ -81,7 +81,7 @@
                     <Column field="status" header="Board Status" :sortable="true" :showFilterMenu="false"
                         style="min-width: 12rem">
                         <template #body="{ data }">
-                            <span :class="['status-text', data.status === 'UNLOCKED' ? 'UNLOCKED' : 'LOCKED']">
+                            <span :class="['status-text', data.status === 'UNLOCKED' ? 'unlocked' : 'locked']">
                                 {{ data.status }}
                             </span>
                         </template>
