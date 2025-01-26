@@ -7,43 +7,45 @@
                     emptyMessage="NO SHIELD FOUND">
                     <template #header>
                         <div class="flex justify-content-between">
-                            <span class="text-xl">MCU DISPATCHER - Auto Shields</span>
-                            <span class="p-input-icon-left">
-                                <i class="pi pi-search" />
+                                                        <div style="display: flex; gap: 16px; align-items: center">
+                            <Button icon="pi pi-arrow-left" severity="secondary" @click="router.go(-1)"/>
+                            <span class="text-xl" style="font-weight: bold; font-size: 24px">MCU DISPATCHER - AutoShields</span>
+                            </div>
+                            <span class="p-input-icon-right">
                                 <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
                             </span>
                         </div>
                     </template>
 
-                    <Column field="name" header="Shield name" :sortable="true" style="min-width: 12rem">
+                    <Column field="name" header="Shield name" :sortable="true" style="min-width: 17rem">
                         <template #filter="{ filterModel, filterCallback }">
                             <InputText v-model="filterModel.value" type="text" @input="filterCallback()"
                                 placeholder="Search by shield" class="p-column-filter" />
                         </template>
                     </Column>
 
-                    <Column field="family" header="Shield family" :sortable="true" style="min-width: 12rem">
+                    <Column field="family" header="Shield family" :sortable="true" style="min-width: 17rem">
                         <template #filter="{ filterModel, filterCallback }">
                             <InputText v-model="filterModel.value" type="text" @input="filterCallback()"
                                 placeholder="Search by family" class="p-column-filter" />
                         </template>
                     </Column>
 
-                    <Column field="serialNumber" header="Serial Number" :sortable="true" style="min-width: 12rem">
+                    <Column field="serialNumber" header="Serial Number" :sortable="true" style="min-width: 17rem">
                         <template #filter="{ filterModel, filterCallback }">
                             <InputText v-model="filterModel.value" type="text" @input="filterCallback()"
                                 placeholder="Search by serial" class="p-column-filter" />
                         </template>
                     </Column>
 
-                    <Column field="hostname" header="Host Name" :sortable="true" style="min-width: 12rem">
+                    <Column field="hostname" header="Host Name" :sortable="true" style="min-width: 17rem">
                         <template #filter="{ filterModel, filterCallback }">
                             <InputText v-model="filterModel.value" type="text" @input="filterCallback()"
                                 placeholder="Search by hostname" class="p-column-filter" />
                         </template>
                     </Column>
 
-                    <Column field="location" header="Location" :sortable="true" style="min-width: 12rem">
+                    <Column field="location" header="Location" :sortable="true" style="min-width: 17rem">
                         <template #filter="{ filterModel, filterCallback }">
                             <InputText v-model="filterModel.value" type="text" @input="filterCallback()"
                                 placeholder="Search by location" class="p-column-filter" />
@@ -51,7 +53,7 @@
                     </Column>
 
                     <Column field="connectionStatus" header="Connection Status" :sortable="true" :showFilterMenu="false"
-                        style="min-width: 12rem">
+                        style="min-width: 17rem">
                         <template #body="{ data }">
                             <span
                                 :class="['status-text', data.connectionStatus === 'CONNECTED' ? 'connected' : 'disconnected']">
@@ -65,7 +67,7 @@
                         </template>
                     </Column>
 
-                    <Column field="port" header="Port" :sortable="true" style="min-width: 12rem">
+                    <Column field="port" header="Port" :sortable="true" style="min-width: 17rem">
                         <template #body="{ data }">
                             {{ data.port.replace('/dev/', '') }}
                         </template>
@@ -76,7 +78,7 @@
                     </Column>
 
                     <Column field="status" header="Shield Status" :sortable="true" :showFilterMenu="false"
-                        style="min-width: 12rem">
+                        style="min-width: 17rem">
                         <template #body="{ data }">
                             <span :class="['status-text', data.status === 'UNLOCKED' ? 'unlocked' : 'locked']">
                                 {{ data.status }}
@@ -89,14 +91,14 @@
                         </template>
                     </Column>
 
-                    <Column field="target" header="Target" :sortable="true" style="min-width: 12rem">
+                    <Column field="target" header="Target" :sortable="true" style="min-width: 17rem">
                         <template #filter="{ filterModel, filterCallback }">
                             <InputText v-model="filterModel.value" type="text" @input="filterCallback()"
                                 placeholder="Search by target" class="p-column-filter" />
                         </template>
                     </Column>
 
-                    <Column field="fixtures" header="Fixtures" style="min-width: 12rem">
+                    <Column field="fixtures" header="Fixtures" style="min-width: 17rem">
                         <template #body="{ data }">
                             <span>{{ data.fixtures?.join(', ') || 'No fixtures' }}</span>
                         </template>
@@ -118,6 +120,10 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
+
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const autoShieldStore = useAutoShieldStore();
 const loading = ref(false);

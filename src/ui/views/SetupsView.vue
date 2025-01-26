@@ -7,29 +7,31 @@
                     emptyMessage="NO SETUP FOUND">
                     <template #header>
                         <div class="flex justify-content-between">
-                            <span class="text-xl">MCU DISPATCHER - Setups</span>
+                            <div style="display: flex; gap: 16px; align-items: center">
+                            <Button icon="pi pi-arrow-left" severity="secondary" @click="router.go(-1)"/>
+                            <span class="text-xl" style="font-weight: bold; font-size: 24px">MCU DISPATCHER - Setups</span>
+                            </div>
                             <span class="p-input-icon-left">
-                                <i class="pi pi-search" />
-                                <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
+                                    <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
                             </span>
                         </div>
                     </template>
 
-                    <Column field="setupName" header="Setup Name" :sortable="true" style="min-width: 12rem">
+                    <Column field="setupName" header="Setup Name" :sortable="true" style="min-width: 17rem">
                         <template #filter="{ filterModel, filterCallback }">
                             <InputText v-model="filterModel.value" type="text" @input="filterCallback()"
                                 placeholder="Search by name" class="p-column-filter" />
                         </template>
                     </Column>
 
-                    <Column field="hostname" header="Host Name" :sortable="true" style="min-width: 12rem">
+                    <Column field="hostname" header="Host Name" :sortable="true" style="min-width: 17rem">
                         <template #filter="{ filterModel, filterCallback }">
                             <InputText v-model="filterModel.value" type="text" @input="filterCallback()"
                                 placeholder="Search by hostname" class="p-column-filter" />
                         </template>
                     </Column>
 
-                    <Column field="protocol" header="Protocol" :sortable="true" style="min-width: 12rem">
+                    <Column field="protocol" header="Protocol" :sortable="true" style="min-width: 17rem">
                         <template #filter="{ filterModel, filterCallback }">
                             <InputText v-model="filterModel.value" type="text" @input="filterCallback()"
                                 placeholder="Search by protocol" class="p-column-filter" />
@@ -37,7 +39,7 @@
                     </Column>
 
                     <Column field="connectionStatus" header="Connection Status" :sortable="true" :showFilterMenu="false"
-                        style="min-width: 12rem">
+                        style="min-width: 17rem">
                         <template #body="{ data }">
                             <span
                                 :class="['status-text', data.connectionStatus === 'CONNECTED' ? 'connected' : 'disconnected']">
@@ -52,7 +54,7 @@
                     </Column>
 
                     <Column field="status" header="Setup Status" :sortable="true" :showFilterMenu="false"
-                        style="min-width: 12rem">
+                        style="min-width: 17rem">
                         <template #body="{ data }">
                             <span :class="['status-text', data.status === 'UNLOCKED' ? 'unlocked' : 'locked']">
                                 {{ data.status }}
@@ -65,7 +67,7 @@
                         </template>
                     </Column>
 
-                    <Column field="rs" header="RS Boards" style="min-width: 12rem">
+                    <Column field="rs" header="RS Boards" style="min-width: 17rem">
                         <template #body="{ data }">
                             <ul v-if="data.rs?.length" class="board-list">
                                 <li v-for="(board, index) in data.rs" :key="index">
@@ -84,7 +86,7 @@
                         </template>
                     </Column>
 
-                    <Column field="ts" header="TS Boards" style="min-width: 12rem">
+                    <Column field="ts" header="TS Boards" style="min-width: 17rem">
                         <template #body="{ data }">
                             <ul v-if="data.ts?.length" class="board-list">
                                 <li v-for="(board, index) in data.ts" :key="index">
@@ -115,6 +117,10 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
+
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const setupStore = useSetupStore();
 const loading = ref(false);
