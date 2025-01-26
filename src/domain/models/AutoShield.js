@@ -76,7 +76,7 @@ class AutoShield {
 }
 
 AutoShield.STATUS = {
-    RESERVED: 'RESERVED',
+    LOCKED: 'LOCKED',
     UNLOCKED: 'UNLOCKED',
 };
 

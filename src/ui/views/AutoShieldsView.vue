@@ -78,13 +78,13 @@
                     <Column field="status" header="Shield Status" :sortable="true" :showFilterMenu="false"
                         style="min-width: 12rem">
                         <template #body="{ data }">
-                            <span :class="['status-text', data.status === 'UNLOCKED' ? 'unlocked' : 'locked']">
+                            <span :class="['status-text', data.status === 'UNLOCKED' ? 'UNLOCKED' : 'LOCKED']">
                                 {{ data.status }}
                             </span>
                         </template>
                         <template #filter="{ filterModel, filterCallback }">
                             <Dropdown v-model="filterModel.value" @change="filterCallback()"
-                                :options="['RESERVED', 'UNLOCKED']" placeholder="Select Status" class="p-column-filter"
+                                :options="['LOCKED', 'UNLOCKED']" placeholder="Select Status" class="p-column-filter"
                                 :showClear="true" />
                         </template>
                     </Column>

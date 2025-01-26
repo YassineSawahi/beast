@@ -115,7 +115,7 @@ class Setup {
 }
 
 Setup.STATUS = {
-    RESERVED: 'RESERVED',
+    LOCKED: 'LOCKED',
     UNLOCKED: 'UNLOCKED',
 };
 
