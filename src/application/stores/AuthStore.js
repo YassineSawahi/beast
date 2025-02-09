@@ -4,11 +4,11 @@ import Auth from '../../domain/models/Auth';
 import { environment } from '../../config/environment';
 
 const repository = new AuthRepositoryImpl();
-
+const auth = new Auth();
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
-        token: Auth.getToken(),
+        token: auth.getToken(),
     }),
     actions: {
         async login() {
@@ -23,11 +23,11 @@ export const useAuthStore = defineStore('auth', {
             }
         },
         logout() {
-            Auth.clearToken();
+            auth.clearToken();
             this.token = null;
         },
         loadToken() {
-            this.token = Auth.getToken();
+            this.token = auth.getToken();
         }
     }
 });
