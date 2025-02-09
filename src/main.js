@@ -36,6 +36,12 @@ app.component('Dropdown', Dropdown)
 app.component('Button', Button)
 
 const authStore = useAuthStore()
-authStore.login()
+authStore.loadToken()
+
+if (!authStore.token) {
+    authStore.login().catch(error => {
+        console.error('Automatic login failed:', error);
+    });
+}
 
 app.mount('#app')
