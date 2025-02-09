@@ -6,7 +6,7 @@
         <div style="display: flex; flex-direction: column; gap: 20px">
             <div style="width: 100%">
                 <DataTable v-model:filters="filters" :value="boardStore.boards" :paginator="true" :rows="10"
-                    dataKey="serial_number" filterDisplay="row" :loading="loading" :globalFilterFields="filterFields"
+                    dataKey="serial_number" filterDisplay="row" :loading="boardStore.loading" :globalFilterFields="filterFields"
                     emptyMessage="NO BOARD FOUND">
                     <template #header>
                         <div class="flex justify-content-between">
@@ -15,7 +15,7 @@
                             <span class="text-xl" style="font-weight: bold; font-size: 24px">MCU DISPATCHER - Boards</span>
                             </div>
                             <span class="p-input-icon-left">
-                                <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
+                                <InputText v-model="filters['global'].value" placeholder="Global Search" />
                             </span>
                         </div>
                     </template>
@@ -120,10 +120,6 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { useBoardStore } from '@/application/stores/BoardStore';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import Dropdown from 'primevue/dropdown';
-import InputText from 'primevue/inputtext';
 //import LoadingScreen from '@/components/LoadingScreen.vue';
 
 import { useRouter } from 'vue-router';
@@ -131,7 +127,6 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const boardStore = useBoardStore();
-const loading = ref(false);
 
 const filterFields = [
     'name', 'family', 'serial_number', 'external_equipement_str',
@@ -157,12 +152,10 @@ const isValidExternalEquipment = (equipment) => {
 
 onMounted(async () => {
     try {
-        loading.value = true;
         await boardStore.fetchBoards();
     } catch (error) {
         console.error('Error loading boards:', error);
     } finally {
-        loading.value = false;
         console.log(boardStore.boards)
     }
 });
