@@ -148,12 +148,10 @@ const isValidExternalEquipment = (equipment) => {
 
 onMounted(async () => {
     try {
-        loading.value = true;
         await boardStore.fetchBoards();
     } catch (error) {
         console.error('Error loading boards:', error);
     } finally {
-        loading.value = false;
         console.log(boardStore.boards)
     }
 });
