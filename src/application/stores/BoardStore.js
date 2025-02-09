@@ -38,4 +38,4 @@ export const useBoardStore = defineStore("board", {
             }
         },
     },
-}); 
+});

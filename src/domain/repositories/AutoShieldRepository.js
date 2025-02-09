@@ -11,7 +11,7 @@ class AutoShieldRepository {
 
     /**
      * Fetch a single auto shield by serial number
-     * @param {string} serialNumber - Auto shield serial number
+     * @param {string} serialNumber
      * @returns {Promise<AutoShield>}
      */
     async fetchBySerialNumber(serialNumber) {
@@ -19,4 +19,4 @@ class AutoShieldRepository {
     }
 }
 
-export default AutoShieldRepository; 
+export default AutoShieldRepository;

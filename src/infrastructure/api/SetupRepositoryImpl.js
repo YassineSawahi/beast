@@ -4,14 +4,14 @@ import SetupRepository from "../../domain/repositories/SetupRepository";
 
 class SetupRepositoryImpl extends SetupRepository {
     async fetchSetups() {
-        const response = await axiosInstance.get("/setups");
+        const response = await axiosInstance.get("/board/setup");
 
-        if (!response.data || !Array.isArray(response.data.data)) {
+        if (!response.data || !Array.isArray(response.data)) {
             console.error('Unexpected API response format:', response);
             return [];
         }
 
-        return response.data.data.map(data => Setup.fromDB(data));
+        return response.data.map(data => Setup.fromDB(data));
     }
 
     async fetchBySerialNumber(serialNumber) {
@@ -26,4 +26,4 @@ class SetupRepositoryImpl extends SetupRepository {
     }
 }
 
-export default SetupRepositoryImpl; 
+export default SetupRepositoryImpl;

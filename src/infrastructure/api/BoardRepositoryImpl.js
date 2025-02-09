@@ -4,14 +4,14 @@ import BoardRepository from "../../domain/repositories/BoardRepository";
 
 class BoardRepositoryImpl extends BoardRepository {
     async fetchBoards() {
-        const response = await axiosInstance.get("/boards");
+        const response = await axiosInstance.get("/board");
 
-        if (!response.data || !Array.isArray(response.data.data)) {
+        if (!response.data || !Array.isArray(response.data)) {
             console.error('Unexpected API response format:', response);
             return [];
         }
 
-        return response.data.data.map(data => Board.fromDB(data));
+        return response.data.map(data => Board.fromDB(data));
     }
 
     async fetchBySerialNumber(serialNumber) {
@@ -26,4 +26,4 @@ class BoardRepositoryImpl extends BoardRepository {
     }
 }
 
-export default BoardRepositoryImpl; 
+export default BoardRepositoryImpl;

@@ -11,7 +11,7 @@ class SetupRepository {
 
     /**
      * Fetch a single setup by serial number
-     * @param {string} serialNumber - Setup serial number
+     * @param {string} serialNumber
      * @returns {Promise<Setup>}
      */
     async fetchBySerialNumber(serialNumber) {
@@ -19,4 +19,4 @@ class SetupRepository {
     }
 }
 
-export default SetupRepository; 
+export default SetupRepository;

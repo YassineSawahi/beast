@@ -1,6 +1,5 @@
 import Board from '../models/Board';
 
-
 class BoardRepository {
     /**
      * Fetch all boards
@@ -12,7 +11,7 @@ class BoardRepository {
 
     /**
      * Fetch a single board by serial number
-     * @param {string} serialNumber - Board serial number
+     * @param {string} serialNumber
      * @returns {Promise<Board>}
      */
     async fetchBySerialNumber(serialNumber) {
