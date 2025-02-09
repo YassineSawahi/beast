@@ -10,10 +10,12 @@ import Button from 'primevue/button'
 import App from './App.vue'
 import router from './ui/router'
 import './ui/assets/main.css';
+import { useAuthStore } from './application/stores/AuthStore';
 
 const app = createApp(App)
+const pinia = createPinia()
+app.use(pinia)
 
-app.use(createPinia())
 app.use(router)
 
 app.use(PrimeVue, {
@@ -32,5 +34,8 @@ app.component('Column', Column)
 app.component('InputText', InputText)
 app.component('Dropdown', Dropdown)
 app.component('Button', Button)
+
+const authStore = useAuthStore()
+authStore.loadToken()
 
 app.mount('#app')
