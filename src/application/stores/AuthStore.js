@@ -5,7 +5,7 @@ import { environment } from '../../config/environment';
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
-        token: null,
+        token: Auth.getToken(),
     }),
     actions: {
         async login() {
@@ -13,6 +13,7 @@ export const useAuthStore = defineStore('auth', {
             try {
                 const response = await AuthRepositoryImpl.login(username, password);
                 this.token = response.token;
+                Auth.setToken(response.token);
             } catch (error) {
                 console.error('Login failed:', error);
                 throw error;

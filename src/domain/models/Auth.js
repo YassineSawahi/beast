@@ -1,10 +1,11 @@
 class Auth {
     constructor() {
-        this.token = null;
+        this.token = this.loadToken();
     }
 
     setToken(token) {
         this.token = token;
+        localStorage.setItem('authToken', token);
     }
 
     getToken() {
@@ -13,6 +14,11 @@ class Auth {
 
     clearToken() {
         this.token = null;
+        localStorage.removeItem('authToken');
+    }
+
+    loadToken() {
+        return localStorage.getItem('authToken');
     }
 }
 
