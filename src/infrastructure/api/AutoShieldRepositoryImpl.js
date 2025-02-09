@@ -6,12 +6,12 @@ class AutoShieldRepositoryImpl extends AutoShieldRepository {
     async fetchAutoShields() {
         const response = await axiosInstance.get("/autoshields");
 
-        if (!response.data || !Array.isArray(response.data.data)) {
+        if (!response.data || !Array.isArray(response.data)) {
             console.error('Unexpected API response format:', response);
             return [];
         }
 
-        return response.data.data.map(data => AutoShield.fromDB(data));
+        return response.data.map(data => AutoShield.fromDB(data));
     }
 
     async fetchBySerialNumber(serialNumber) {

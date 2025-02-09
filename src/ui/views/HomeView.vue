@@ -9,27 +9,59 @@ const navigate = (path) => {
 </script>
 
 <template>
-  <main>
-    <div class="flex flex-col items-center gap-6 p-42" style="padding-top: 104px;">
-      <img src="/ST_logo_2020.svg.png" alt="ST Logo" class="w-64 h-auto" style="padding-bottom: 24px" />
+  <main class="home-container">
+    <div class="content">
+      <img src="/ST_logo_2020.svg.png" alt="ST Logo" class="logo" />
 
-      <div class="flex flex-col gap-4" style="display: flex; flex-direction: column; gap: 1rem;">
-        <Button @click="navigate('/boards')" severity="secondary" raised class="w-48"
-          style="width: 350px; font-size: 20px; font-weight: bold;">
+      <div class="buttons">
+        <Button @click="navigate('/boards')" severity="secondary" raised class="button">
           Boards
         </Button>
 
-        <Button @click="navigate('/auto-shields')" severity="secondary" raised class="w-48"
-          style="width: 350px; font-size: 20px; font-weight: bold;">
+        <Button @click="navigate('/auto-shields')" severity="secondary" raised class="button">
           Autoshields
         </Button>
 
-        <Button @click="navigate('/setups')" severity="secondary" raised class="w-48"
-          style="width: 350px; font-size: 20px; font-weight: bold;">
+        <Button @click="navigate('/setups')" severity="secondary" raised class="button">
           Setups
         </Button>
       </div>
     </div>
-
   </main>
 </template>
+
+<style scoped>
+.home-container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.logo {
+  width: 350px;
+  height: auto;
+  padding-bottom: 24px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.button {
+  width: 350px;
+  font-size: 20px;
+  font-weight: bold;
+}
+</style>

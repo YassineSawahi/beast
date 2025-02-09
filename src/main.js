@@ -1,5 +1,3 @@
-import './ui/assets/main.css'
-
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
@@ -11,6 +9,7 @@ import Dropdown from 'primevue/dropdown'
 import Button from 'primevue/button'
 import App from './App.vue'
 import router from './ui/router'
+import './ui/assets/main.css';
 
 const app = createApp(App)
 
