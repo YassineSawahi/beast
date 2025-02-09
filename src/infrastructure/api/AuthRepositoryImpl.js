@@ -1,4 +1,3 @@
-import Auth from "../../domain/models/Auth";
 import AuthRepository from "../../domain/repositories/AuthRepository";
 import axiosInstance from "./axiosInstance";
 
