@@ -16,14 +16,19 @@ export const useAuthStore = defineStore('auth', {
             try {
                 const response = await repository.login(username, password);
                 this.token = response.access_token;
+                Auth.setToken(response.access_token);
             } catch (error) {
                 console.error('Login failed:', error);
                 throw error;
             }
         },
         logout() {
+            Auth.clearToken();
             this.token = null;
         },
+        loadToken() {
+            this.token = Auth.getToken();
+        }
     }
 });
 
