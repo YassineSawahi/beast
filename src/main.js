@@ -36,6 +36,6 @@ app.component('Dropdown', Dropdown)
 app.component('Button', Button)
 
 const authStore = useAuthStore()
-authStore.loadToken()
+authStore.login()
 
 app.mount('#app')
